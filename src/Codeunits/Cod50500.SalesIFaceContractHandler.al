@@ -54,6 +54,7 @@ codeunit 51500 "Sales IFace Contract Handler" implements "Price Calculation"
 
     procedure ApplyPrice(CalledByFieldNo: Integer)
     var
+        SLineVariant: Variant;
         TempPriceListLine: Record "Price List Line" temporary;
         PriceListLine: Record "Price List Line";
         SalesHeader: Record "Sales Header";
@@ -79,42 +80,36 @@ codeunit 51500 "Sales IFace Contract Handler" implements "Price Calculation"
                 SalesHeaderSysIDField := SalesHeaderRef.Field(SalesHeaderRef.SystemIdNo());
                 SalesLineSysIDField := SalesLineRef.Field(SalesLineRef.SystemIdNo());
                 SalesHeader.GetBySystemId(SalesHeaderSysIDField.Value);
-                SalesLine.GetBySystemId(SalesLineSysIDField.Value);
 
+                //Remember - Sales Line May not exist yet
+                CurrLineWithPrice.GetLine(SLineVariant);
+                if SLineVariant.IsRecord() then begin
+                    SalesLine.Copy(SLineVariant);
 
-                //Step 6 - Implement some custom logic for sales Price
-                //PriceListLine.SetRange(Status, PriceListLine.Status::Active);  //cannot make price active due to duplicate check
-                PriceListLine.SetRange("Price Type", PriceListLine."Price Type"::Sale);
-                PriceListLine.SetFilter("Amount Type", '%1|%2', AmountType, PriceListLine."Amount Type"::Any);
+                    //Step 6 - Implement some custom logic for sales Price
+                    //PriceListLine.SetRange(Status, PriceListLine.Status::Active);  //cannot make price active due to duplicate check
+                    PriceListLine.SetRange("Price Type", PriceListLine."Price Type"::Sale);
+                    PriceListLine.SetFilter("Amount Type", '%1|%2', AmountType, PriceListLine."Amount Type"::Any);
 
-                PriceListLine.SetFilter("Ending Date", '%1|>=%2', 0D, SalesHeader."Document Date");
-                PriceListLine.SetFilter("Currency Code", '%1|%2', SalesHeader."Currency Code", '');
-                if SalesLine."Unit of Measure Code" <> '' then
-                    PriceListLine.SetFilter("Unit of Measure Code", '%1|%2', SalesLine."Unit of Measure Code", '');
-                PriceListLine.SetRange("Starting Date", 0D, SalesHeader."Document Date");
+                    PriceListLine.SetFilter("Ending Date", '%1|>=%2', 0D, SalesHeader."Document Date");
+                    PriceListLine.SetFilter("Currency Code", '%1|%2', SalesHeader."Currency Code", '');
+                    if SalesLine."Unit of Measure Code" <> '' then
+                        PriceListLine.SetFilter("Unit of Measure Code", '%1|%2', SalesLine."Unit of Measure Code", '');
+                    PriceListLine.SetRange("Starting Date", 0D, SalesHeader."Document Date");
 
-                PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
-                PriceListLine.SetRange("Asset No.", SalesLine."No.");
-                PriceListLine.SetRange("Ship-To Code", SalesHeader."Ship-to Code");
+                    PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+                    PriceListLine.SetRange("Asset No.", SalesLine."No.");
+                    PriceListLine.SetRange("Ship-To Code", SalesHeader."Ship-to Code");
 
-
-                if not Confirm('Price List Filters: %1\Count: %2', false, PriceListLine.GetFilters(), PriceListLine.Count()) then
-                    Error('Stopping');
-
-
-                // CurrLineWithPrice.Verify();
-                // if not CurrLineWithPrice.CopyToBuffer(PriceCalculationBufferMgt) then
-                //     exit;
-                // FoundLines := FindshipToLines(AmountType::Price, TempPriceListLine, SalesIFaceBuffer, false, SalesHeader, SalesLine);
-                // if not Confirm('Number of price Lines: %1', false, TempPriceListLine.Count()) then
-                //     Error('Halting for input 3');
-                // if FoundLines then
-                //     FoundPrice := CalcBestAmount(AmountType::Price, PriceCalculationBufferMgt, TempPriceListLine);
-                // if not FoundPrice then
-                //     PriceCalculationBufferMgt.FillBestLine(AmountType::Price, TempPriceListLine);
-                // if CurrLineWithPrice.IsPriceUpdateNeeded(AmountType::Price, FoundLines, CalledByFieldNo) then
-                //     CurrLineWithPrice.SetPrice(AmountType::Price, TempPriceListLine);
-                // CurrLineWithPrice.Update(AmountType::Price);
+                    if PriceListLine.FindFirst() then begin
+                        CurrLineWithPrice.SetPrice(AmountType::Price, PriceListLine)
+                    end else begin
+                        OrigPriceEngine.ApplyPrice(CalledByFieldNo);
+                        Message('WARNING - unable to price by Ship To.\Sell-To Customer No. %1 and Ship To Code %2.', SalesHeader."Sell-to Customer No.", SalesHeader."Ship-to Code");
+                    end;
+                end else begin
+                    Error('Line is not a Sales Line Record - this is a programming error.');
+                end;
             end;
         end else begin
             OrigPriceEngine.ApplyPrice(CalledByFieldNo);

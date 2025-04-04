@@ -29,27 +29,29 @@ codeunit 51502 "Sales IFace Price Calc. Buffer"
 
     procedure SetShipToFiltersOnPriceListLine(var PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type"; ShowAll: Boolean; var SHeader: Record "Sales Header"; var SLine: Record "Sales Line")
     begin
-        PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+        //Step 6 - Implement some custom logic for sales Price
+        //PriceListLine.SetRange(Status, PriceListLine.Status::Active); - There are no active prices due to repeated item checks
         PriceListLine.SetRange("Price Type", PriceCalculationBuffer."Price Type");
         PriceListLine.SetFilter("Amount Type", '%1|%2', AmountType, PriceListLine."Amount Type"::Any);
 
-        PriceListLine.SetFilter("Ending Date", '%1|>=%2', 0D, PriceCalculationBuffer."Document Date");
+        PriceListLine.SetFilter("Ending Date", '%1|>=%2', 0D, SHeader."Document Date");
         if not ShowAll then begin
-            PriceListLine.SetFilter("Currency Code", '%1|%2', PriceCalculationBuffer."Currency Code", '');
+            PriceListLine.SetFilter("Currency Code", '%1|%2', SHeader."Currency Code", '');
             if PriceCalculationBuffer."Unit of Measure Code" <> '' then
-                PriceListLine.SetFilter("Unit of Measure Code", '%1|%2', PriceCalculationBuffer."Unit of Measure Code", '');
-            PriceListLine.SetRange("Starting Date", 0D, PriceCalculationBuffer."Document Date");
+                PriceListLine.SetFilter("Unit of Measure Code", '%1|%2', SLine."Unit of Measure Code", '');
+            PriceListLine.SetRange("Starting Date", 0D, SHeader."Document Date");
         end;
 
         PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
         PriceListLine.SetRange("Asset No.", SLine."No.");
         PriceListLine.SetRange("Ship-To Code", SHeader."Ship-to Code");
 
-        if not Confirm('Price Line Filters: %1', false, PriceListLine.GetFilters()) then
+        if not Confirm('Price Line Filters: %1\Count: %2', false, PriceListLine.GetFilters(), PriceListLine.Count()) then
             Error('Stop Buffer Count');
 
         OnAfterSetFilters(PriceListLine, AmountType, PriceCalculationBuffer, ShowAll);
         PriceListLineFiltered.CopyFilters(PriceListLine);
+
     end;
 
 
