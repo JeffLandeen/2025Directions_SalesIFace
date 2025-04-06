@@ -29,7 +29,7 @@ codeunit 51502 "Sales IFace Price Calc. Buffer"
 
     procedure SetShipToFiltersOnPriceListLine(var PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type"; ShowAll: Boolean; var SHeader: Record "Sales Header"; var SLine: Record "Sales Line")
     begin
-        //Step 6 - Implement some custom logic for sales Price
+        //Step 5 - Implement/Update Price Calc. Buffer as needed
         //PriceListLine.SetRange(Status, PriceListLine.Status::Active); - There are no active prices due to repeated item checks
         PriceListLine.SetRange("Price Type", PriceCalculationBuffer."Price Type");
         PriceListLine.SetFilter("Amount Type", '%1|%2', AmountType, PriceListLine."Amount Type"::Any);

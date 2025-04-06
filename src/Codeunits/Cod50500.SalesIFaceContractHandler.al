@@ -203,7 +203,7 @@ codeunit 51500 "Sales IFace Contract Handler" implements "Price Calculation"
     #endregion
 
     #region local only procedures
-    //Step 5 - This will show it in the price method list
+    //Step 4 - This will show it in the price method list
     local procedure AddSupportedSetup(var TempPriceCalculationSetup: Record "Price Calculation Setup" temporary)
     begin
         TempPriceCalculationSetup.Init();
