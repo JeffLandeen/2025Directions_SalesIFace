@@ -3,6 +3,8 @@ using Microsoft.Pricing.Calculation;
 
 codeunit 51501 "Sales IFace Management"
 {
+    //Step 4 - This will show it in the price method list
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Price Calculation Mgt.", 'OnFindSupportedSetup', '', false, false)]
     local procedure OnFindSupportedSetup(var TempPriceCalculationSetup: Record "Price Calculation Setup");
     begin
