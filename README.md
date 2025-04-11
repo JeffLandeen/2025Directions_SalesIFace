@@ -23,12 +23,13 @@ References
 ==========
 Github Repositories
 -------------------
-Custom Process Interface: [Silviu Process Example Github Link](https://github.com/SilviuVirlan/Directions2025)
-Retention Policies Interfaces (Base App): [Silviu Policy Github Link](https://github.com/SilviuVirlan/Directions2025InterfacesRetentionPoliciesCustomization)
+1. Custom Process Interface: [Silviu Process Example Github Link](https://github.com/SilviuVirlan/Directions2025)
+2. Retention Policies Interfaces (Base App): [Silviu Policy Github Link](https://github.com/SilviuVirlan/Directions2025InterfacesRetentionPoliciesCustomization)
 
 Blogs & Articles
 ----------------
-Extending Best Price calculations (MS Learn): [Ext. Price Calculations Link](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-extending-best-price-calculations)
-Extending Sales Price Engine (Flemming Bakkensen): [Blog Link](https://www.linkedin.com/pulse/how-extend-price-calculation-flemming-bakkensen-6tkgf/)
-Interfaces (MS Learn): [Interface Help](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-interfaces-in-al)
-Kyle Hardens Days of Knowledge Examples: [DOK Examples](https://github.com/user-attachments/assets/c5187aed-6fea-4d6f-8b6f-607dd9574c3e)
+1. Directions 2025 Interface Presentation: [Link to Github Upload of Deck](https://github.com/JeffLandeen/2025Directions_SalesIFace/blob/main/presentation/Directions%202025%20Las%20Vegas%20-%20Harnessing%20Interfaces%20-%20build%20your%20own%20sales%20price%20engine.pptx)
+2. Extending Best Price calculations (MS Learn): [Ext. Price Calculations Link](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-extending-best-price-calculations)
+3. Extending Sales Price Engine (Flemming Bakkensen): [Blog Link](https://www.linkedin.com/pulse/how-extend-price-calculation-flemming-bakkensen-6tkgf/)
+4. Interfaces (MS Learn): [Interface Help](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-interfaces-in-al)
+5. Kyle Hardens Days of Knowledge Examples: [DOK Examples](https://github.com/user-attachments/assets/c5187aed-6fea-4d6f-8b6f-607dd9574c3e)
