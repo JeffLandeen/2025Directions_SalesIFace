@@ -32,4 +32,4 @@ Blogs & Articles
 2. Extending Best Price calculations (MS Learn): [Ext. Price Calculations Link](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-extending-best-price-calculations)
 3. Extending Sales Price Engine (Flemming Bakkensen): [Blog Link](https://www.linkedin.com/pulse/how-extend-price-calculation-flemming-bakkensen-6tkgf/)
 4. Interfaces (MS Learn): [Interface Help](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-interfaces-in-al)
-5. Kyle Hardens Days of Knowledge Examples: [DOK Examples](https://github.com/user-attachments/assets/c5187aed-6fea-4d6f-8b6f-607dd9574c3e)
+5. Kyle Hardens Days of Knowledge Examples: [DOK Examples](https://github.com/kylehardin7/daysofknowledge)
